@@ -67,15 +67,8 @@ const installationMethods = [
   }
 ];
 
-const reasons = [
-  "Licensed Wisconsin Contractor",
-  "Fully Insured",
-  "Professional Installation",
-  "Serving Madison & Southern Wisconsin"
-];
-
 export const metadata: Metadata = {
-  title: "Window & Door Installation Services | OLKORF Construction",
+  title: "Window & Door Installation Services",
   description:
     "Professional window installation, door replacement, patio doors, storm doors, aluminum wrapping, and exterior trim services in Madison and Southern Wisconsin."
 };
@@ -132,16 +125,19 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section aria-labelledby="why-choose-services-heading" className="services-section">
-          <div className="services-section__heading">
-            <h2 id="why-choose-services-heading">Why Homeowners Choose OLKORF Construction</h2>
-          </div>
-          <div className="services-reasons-grid">
-            {reasons.map((reason) => (
-              <article className="services-reason-card" key={reason}>
-                <p>{reason}</p>
-              </article>
-            ))}
+        <section aria-labelledby="why-choose-services-heading" className="services-section services-owner-story">
+          <figure className="services-owner-story__portrait">
+            <Image src="/images/about/olkorf-owner-window-installation.webp" alt="OLKORF Construction owner working on a window installation" width={900} height={1600} sizes="(max-width: 760px) 90vw, (max-width: 1200px) 38vw, 420px" />
+            <figcaption>Owner-operated. Personally installed.</figcaption>
+          </figure>
+          <div className="services-owner-story__copy">
+            <p className="services-owner-story__eyebrow">A PERSONAL COMMITMENT</p>
+            <div className="services-section__heading">
+              <h2 id="why-choose-services-heading">A more personal approach to the work.</h2>
+            </div>
+            <p>OLKORF Construction is owner-operated, which means I’m personally involved in the work I take on. I’m not just the person you speak with about the project — I’m also the person who shows up and does the installation.</p>
+            <p>For me, that makes a difference. I can see the condition of the opening, understand what needs to be done, and make decisions based on what is actually happening on site. If something needs extra attention, it doesn’t have to pass through several people before it gets addressed.</p>
+            <p>I focus primarily on window and door installation and prefer to take on work where I can stay involved from the initial conversation through the finished installation. My goal is simple: do the work carefully, communicate clearly, and leave the customer with a result I’m comfortable putting my name on.</p>
           </div>
         </section>
 

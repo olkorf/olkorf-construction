@@ -35,7 +35,7 @@ const products = [
   {
     title: "Patio Doors",
     text: "Sliding patio and glass door systems that make interior spaces brighter and easier to use.",
-    image: "/images/home/home-patio-door.webp",
+    image: "/images/home/home-patio-door.webp?v=2",
     href: "/products"
   }
 ];
@@ -43,36 +43,31 @@ const products = [
 export default function HomePage() {
   return (
     <>
-      <section className="home-hero">
+      <section className="home-hero home-hero--photo">
         <div className="home-hero__inner">
           <div className="home-hero__content">
             <p className="home-hero__badge">Licensed &amp; Fully Insured</p>
             <h1 className="home-hero__title">
-              Window &amp; Door Sales,
+              Better windows.
               <br />
-              Replacement &amp;
+              Better doors.
               <br />
-              Installation
+              A home you love.
             </h1>
             <p className="home-hero__subtitle">
-              Helping Wisconsin homeowners choose quality windows and doors and get professional installation with
-              attention to detail.
+              Window and door sales, replacement, and installation in Madison and Southern Wisconsin.
+              Thoughtful choices. Careful workmanship.
             </p>
             <div className="home-hero__actions">
               <Link className="cta-button" href="/estimate">
                 Get Free Estimate →
               </Link>
               <Link className="cta-button cta-button--secondary" href="/products">
-                View Products
+                Explore Products →
               </Link>
             </div>
           </div>
 
-          <div
-            aria-label="Bright Madison area home exterior with replacement windows and entry door"
-            className="home-hero__visual"
-            role="img"
-          />
         </div>
       </section>
 

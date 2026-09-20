@@ -2484,25 +2484,25 @@ button {
 .footer__inner {
   align-items: start;
   display: grid;
-  gap: 36px;
-  grid-template-columns: minmax(260px, 1.15fr) minmax(260px, 1fr) minmax(230px, 0.9fr);
+  gap: 48px;
+  grid-template-columns: minmax(280px, 1.5fr) minmax(220px, 1fr) minmax(140px, 0.65fr);
   margin: 0 auto;
   max-width: 1180px;
-  padding: 18px 32px 12px;
+  padding: 40px 32px 28px;
 }
 
 .footer__column {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
 .footer__brand {
   color: #1d1d1f;
   display: inline-flex;
-  font-size: 0.9rem;
+  font-size: 1.125rem;
   font-weight: 640;
-  line-height: 1.2;
+  line-height: 1.4;
   margin-bottom: 5px;
 }
 
@@ -2510,9 +2510,9 @@ button {
 .footer__nav a,
 .footer__social-links a {
   color: #6e6e73;
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 1.35;
+  line-height: 1.5;
   transition: color 160ms ease;
 }
 
@@ -2528,17 +2528,17 @@ button {
 
 .footer h2 {
   color: #1d1d1f;
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0;
-  line-height: 1.2;
+  line-height: 1.4;
   margin: 0 0 5px;
   text-transform: none;
 }
 
 .footer__nav {
   display: grid;
-  gap: 4px 18px;
+  gap: 8px 24px;
   grid-template-columns: repeat(2, minmax(86px, max-content));
 }
 
@@ -2549,7 +2549,7 @@ button {
 .footer__social-links {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 
 .footer__social-links a {
@@ -2572,15 +2572,19 @@ button {
 
 .footer__bottom p {
   color: #86868b;
-  font-size: 0.75rem;
-  line-height: 1.2;
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 
 @media (max-width: 860px) {
   .footer__inner {
-    gap: 22px;
-    grid-template-columns: 1fr;
-    padding: 22px 20px 12px;
+    gap: 28px 40px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    padding: 32px 20px 24px;
+  }
+
+  .footer__brand-column {
+    grid-column: 1 / -1;
   }
 
   .footer__nav {
@@ -2589,6 +2593,12 @@ button {
 
   .footer__bottom {
     padding: 8px 20px 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  .footer__inner {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

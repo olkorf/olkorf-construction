@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 
 const projectTypes = [
   "Windows",
@@ -39,29 +39,12 @@ const initialFormState: FormState = {
   website: ""
 };
 
-export function EstimateForm() {
-  const [form, setForm] = useState<FormState>(initialFormState);
-  const [selectedProjectTypes, setSelectedProjectTypes] = useState<string[]>([]);
+export function EstimateForm({ initialMessage = "", initialTypes = [] }: { initialMessage?: string; initialTypes?: string[] }) {
+  const [form, setForm] = useState<FormState>({...initialFormState, message: initialMessage});
+  const [selectedProjectTypes, setSelectedProjectTypes] = useState<string[]>(initialTypes);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const emailBody = useMemo(
-    () =>
-      [
-        `Name: ${form.name}`,
-        `Phone: ${form.phone}`,
-        `Email: ${form.email || "Not provided"}`,
-        `City: ${form.city}`,
-        `Project type: ${selectedProjectTypes.join(", ")}`,
-        `Approximate quantity: ${form.quantity || "Not sure yet"}`,
-        `Project timeline: ${form.timeline || "Not provided"}`,
-        "",
-        "Message:",
-        form.message || "Not provided"
-      ].join("\n"),
-    [form, selectedProjectTypes]
-  );
 
   const updateField = (field: keyof FormState, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -85,7 +68,7 @@ export function EstimateForm() {
     return "";
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
 
@@ -104,20 +87,19 @@ export function EstimateForm() {
     setIsSubmitting(true);
 
     try {
-      const mailtoUrl = new URL("mailto:info@olkorfconstruction.com");
-      mailtoUrl.searchParams.set("subject", "New Estimate Request - OLKORF Construction");
-      mailtoUrl.searchParams.set("body", emailBody);
-      window.location.href = mailtoUrl.toString();
-
-      window.setTimeout(() => {
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        setForm(initialFormState);
-        setSelectedProjectTypes([]);
-      }, 650);
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, kind: "estimate", projectTypes: selectedProjectTypes })
+      });
+      if (!response.ok) throw new Error("Delivery not confirmed");
+      setIsSubmitted(true);
+      setForm(initialFormState);
+      setSelectedProjectTypes([]);
     } catch {
+      setError("We couldn’t confirm your message was sent. Your information is still here. Please try again or email info@olkorfconstruction.com.");
+    } finally {
       setIsSubmitting(false);
-      setError("Something went wrong while preparing your estimate request. Please call or email us directly.");
     }
   };
 
@@ -271,7 +253,7 @@ export function EstimateForm() {
       ) : null}
 
       <button className="cta-button estimate-form__submit" disabled={isSubmitting} type="submit">
-        {isSubmitting ? "Preparing Request..." : "Request My Free Estimate →"}
+        {isSubmitting ? "Sending Request..." : "Request My Free Estimate →"}
       </button>
     </form>
   );

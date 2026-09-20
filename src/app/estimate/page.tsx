@@ -13,7 +13,10 @@ export const metadata: Metadata = {
   description: "Request a free window or door estimate from OLKORF Construction."
 };
 
-export default function EstimatePage() {
+export default async function EstimatePage({ searchParams }: { searchParams: Promise<{ project?: string; types?: string }> }) {
+  const params = await searchParams;
+  const project = typeof params.project === "string" ? params.project.slice(0,6000) : "";
+  const types = typeof params.types === "string" ? params.types.split(",").filter(type => ["Windows", "Entry Door", "Patio Door"].includes(type)) : [];
   return (
     <section aria-labelledby="estimate-heading" className="estimate-page">
       <div className="estimate-page__inner">
@@ -30,7 +33,7 @@ export default function EstimatePage() {
         </div>
 
         <div className="estimate-card">
-          <EstimateForm />
+          <EstimateForm initialMessage={project} initialTypes={types} />
         </div>
       </div>
     </section>

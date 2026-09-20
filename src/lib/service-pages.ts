@@ -22,7 +22,7 @@ export const servicePages: ServicePage[] = [
     slug: "window-installation",
     name: "Window Installation",
     metadata: {
-      title: "Window Installation | OLKORF Construction",
+      title: "Window Installation",
       description:
         "Professional window installation for homeowners who want better comfort, appearance, durability, and long-term performance."
     },
@@ -76,7 +76,7 @@ export const servicePages: ServicePage[] = [
     slug: "entry-door-installation",
     name: "Entry Door Installation",
     metadata: {
-      title: "Entry Door Installation | OLKORF Construction",
+      title: "Entry Door Installation",
       description:
         "Professional entry door installation for homeowners who want better curb appeal, weather protection, security, and long-term value."
     },
@@ -130,7 +130,7 @@ export const servicePages: ServicePage[] = [
     slug: "patio-door-installation",
     name: "Patio Door Installation",
     metadata: {
-      title: "Patio Door Installation | OLKORF Construction",
+      title: "Patio Door Installation",
       description:
         "Professional patio door installation for sliding doors, French patio doors, replacement openings, and cleaner indoor-outdoor living."
     },
@@ -184,7 +184,7 @@ export const servicePages: ServicePage[] = [
     slug: "storm-door-installation",
     name: "Storm Door Installation",
     metadata: {
-      title: "Storm Door Installation | OLKORF Construction",
+      title: "Storm Door Installation",
       description:
         "Professional storm door installation for homeowners who want better entry protection, ventilation, convenience, and fit."
     },
@@ -238,7 +238,7 @@ export const servicePages: ServicePage[] = [
     slug: "aluminum-wrapping",
     name: "Aluminum Wrapping & Exterior Trim",
     metadata: {
-      title: "Aluminum Wrapping & Exterior Trim | OLKORF Construction",
+      title: "Aluminum Wrapping & Exterior Trim",
       description:
         "Professional aluminum wrapping and exterior trim finishing for windows, doors, exposed wood, and cleaner low-maintenance exteriors."
     },

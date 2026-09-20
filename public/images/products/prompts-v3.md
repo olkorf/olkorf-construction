@@ -1,0 +1,16 @@
+Created with built-in ImageGen using public/images/home/hero-home.webp as the sole style reference. AI-generated illustrative imagery.
+
+## hero-v3
+Use the reference ONLY for Wisconsin residential architecture, natural light and photographic quality. Create a DISTINCT house/product scene, not the same house. Photorealistic premium American Midwest architectural photography, believable proportions, finished installation, natural materials, sharp fine detail. No people, text, logos, labels, borders or collage. High resolution 2048x2048. A different warm taupe Craftsman Wisconsin suburban home, medium pitched shingle gables, cream trim, stone porch bases, double-hung windows, dark blue front door, maple trees and manicured garden. Three-quarter whole facade.
+
+## windows-v3
+Use the reference ONLY for Wisconsin residential architecture, natural light and photographic quality. Create a DISTINCT house/product scene, not the same house. Photorealistic premium American Midwest architectural photography, believable proportions, finished installation, natural materials, sharp fine detail. No people, text, logos, labels, borders or collage. High resolution 2048x2048. Close exterior view of paired white double-hung windows with upper sash grilles on sage-green lap siding, cream wide trim and small limestone foundation below. Entire windows centered with room around trim. Wisconsin Craftsman home.
+
+## entry-v3
+Use the reference ONLY for Wisconsin residential architecture, natural light and photographic quality. Create a DISTINCT house/product scene, not the same house. Photorealistic premium American Midwest architectural photography, believable proportions, finished installation, natural materials, sharp fine detail. No people, text, logos, labels, borders or collage. High resolution 2048x2048. Complete navy blue Craftsman entry door with three small upper glass panes and single sidelight, cream casing, warm taupe lap siding, limestone porch column at edge. Whole threshold and door visible, centered product photograph.
+
+## patio-v3
+Use the reference ONLY for Wisconsin residential architecture, natural light and photographic quality. Create a DISTINCT house/product scene, not the same house. Photorealistic premium American Midwest architectural photography, believable proportions, finished installation, natural materials, sharp fine detail. No people, text, logos, labels, borders or collage. High resolution 2048x2048. Complete standard two-panel white sliding patio door on light gray lap siding at rear of Wisconsin Craftsman home, small composite deck, leafy maple garden reflection, dining room visible. Entire door and threshold centered with ample surroundings.
+
+## detail-v3
+Use the reference ONLY for Wisconsin residential architecture, natural light and photographic quality. Create a DISTINCT house/product scene, not the same house. Photorealistic premium American Midwest architectural photography, believable proportions, finished installation, natural materials, sharp fine detail. No people, text, logos, labels, borders or collage. High resolution 2048x2048. Interior view of a bright Wisconsin home corner with white-trimmed double-hung windows, light oak floor, warm cream walls, maple foliage outside. Focus on windows and clean finished trim, modest room rather than luxury mansion.

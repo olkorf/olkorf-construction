@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 
 const subjects = ["General Question", "Window Installation", "Door Installation", "Existing Project", "Warranty / Service", "Other"];
 
@@ -28,20 +28,6 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const emailBody = useMemo(
-    () =>
-      [
-        `Name: ${form.name}`,
-        `Email: ${form.email}`,
-        `Phone: ${form.phone || "Not provided"}`,
-        `Subject: ${form.subject || "General Question"}`,
-        "",
-        "Message:",
-        form.message
-      ].join("\n"),
-    [form]
-  );
-
   const updateField = (field: keyof ContactFormState, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
   };
@@ -54,7 +40,7 @@ export function ContactForm() {
     return "";
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
 
@@ -73,19 +59,18 @@ export function ContactForm() {
     setIsSubmitting(true);
 
     try {
-      const mailtoUrl = new URL("mailto:info@olkorfconstruction.com");
-      mailtoUrl.searchParams.set("subject", "New Contact Form Message");
-      mailtoUrl.searchParams.set("body", emailBody);
-      window.location.href = mailtoUrl.toString();
-
-      window.setTimeout(() => {
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        setForm(initialFormState);
-      }, 650);
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, kind: "contact" })
+      });
+      if (!response.ok) throw new Error("Delivery not confirmed");
+      setIsSubmitted(true);
+      setForm(initialFormState);
     } catch {
+      setError("We couldn’t confirm your message was sent. Your information is still here. Please try again or email info@olkorfconstruction.com.");
+    } finally {
       setIsSubmitting(false);
-      setError("Something went wrong while preparing your message. Please call or email us directly.");
     }
   };
 

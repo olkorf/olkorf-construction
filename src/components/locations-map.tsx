@@ -86,12 +86,12 @@ function getNearestWrappedX(x: number, centerX: number, zoom: number) {
   return wrappedX;
 }
 
-export function LocationsMap() {
+export function LocationsMapFallback() {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const dragStartRef = useRef<{ center: ReturnType<typeof project>; pointerX: number; pointerY: number } | null>(null);
   const [center, setCenter] = useState<LngLat>(MADISON);
   const [mapSize, setMapSize] = useState<MapSize>({ height: 560, width: 560 });
-  const [zoom, setZoom] = useState(7);
+  const [zoom, setZoom] = useState(8);
 
   useEffect(() => {
     const element = mapRef.current;
@@ -222,7 +222,7 @@ export function LocationsMap() {
           }}
         />
 
-        {visibleCities.map((city) => {
+        {visibleCities.filter((city) => city.primary || zoom >= 10).map((city) => {
           const cityPixel = project(city.coordinates, zoom);
           const left = getNearestWrappedX(cityPixel.x, centerPixel.x, zoom) - leftWorld;
           const top = cityPixel.y - topWorld;
@@ -255,12 +255,13 @@ export function LocationsMap() {
       </div>
 
       <a
+        aria-label="Open OpenStreetMap"
         className="locations-map-real__open"
         href="https://www.openstreetmap.org/?mlat=43.0731&mlon=-89.4012#map=8/43.0731/-89.4012"
         rel="noreferrer"
         target="_blank"
       >
-        Open larger map
+        © OpenStreetMap contributors
       </a>
     </div>
   );

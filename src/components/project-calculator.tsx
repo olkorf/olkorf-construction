@@ -1,0 +1,28 @@
+"use client";
+import {useRef,useState} from "react";
+import Link from "next/link";
+import {PanelsTopLeft,DoorClosed,Columns2,Plus,Trash2,Check,ArrowRight} from "lucide-react";
+import {Item,estimate,money,newItem,options} from "@/lib/calculator";
+import s from "@/app/calculator/calculator.module.css";
+export function ProjectCalculator(){
+ const [items,setItems]=useState<Item[]>([{...newItem(1),quantity:6}]);const nextId=useRef(2);
+ const update=(id:number,patch:Partial<Item>)=>setItems(current=>current.map(item=>item.id===id?{...item,...patch}:item));
+ const results=items.map(estimate),custom=results.some(r=>r===null);
+ const total=results.reduce<[number,number]>((sum,r)=>r?[sum[0]+r[0],sum[1]+r[1]]:sum,[0,0]);
+ const summary=items.map((item,i)=>`${item.quantity} × ${item.material} ${item.style} (${item.category}); scope: ${item.scope}: ${results[i]?`${money(results[i]![0])}–${money(results[i]![1])}`:"assessment needed"}`).join("\n");
+ const message=`Calculator planning estimate (not a quote):\n${summary}\n${custom?"Priced items only":"Planning total"}: ${money(total[0])}–${money(total[1])}${custom?"; assessment items additional":""}. Final price subject to measurements and scope review.`;
+ return <div className={s.layout}><div className={s.items}>{items.map((item,index)=><section className={s.item} key={item.id} aria-label={`Project item ${index+1}`}>
+ <div className={s.itemHeading}><span>PROJECT {String(index+1).padStart(2,"0")}</span>{items.length>1&&<button type="button" className={s.remove} aria-label={`Remove project ${index+1}`} onClick={()=>setItems(current=>current.filter(i=>i.id!==item.id))}><Trash2 size={16}/>Remove</button>}</div>
+ <fieldset className={s.fieldset}><legend>What are you replacing?</legend><div className={s.categories}>{([["Windows",PanelsTopLeft],["Entry Door",DoorClosed],["Patio Door",Columns2]] as const).map(([category,Icon])=><button type="button" key={category} aria-pressed={item.category===category} onClick={()=>update(item.id,newItem(item.id,category))}><Icon size={22}/>{category}</button>)}</div></fieldset>
+ <div className={s.fields}><label htmlFor={`style-${item.id}`}>Style<select id={`style-${item.id}`} value={item.style} onChange={e=>update(item.id,{style:e.target.value,material:e.target.value==="Hinged French doors"&&item.material==="Vinyl"?"Fiberglass":item.material})}>{options[item.category].styles.map(style=><option key={style}>{style}</option>)}</select></label>
+ <label htmlFor={`material-${item.id}`}>Material<select id={`material-${item.id}`} value={item.material} onChange={e=>update(item.id,{material:e.target.value})}>{options[item.category].materials.filter(m=>!(item.style==="Hinged French doors"&&m==="Vinyl")).map(m=><option key={m}>{m}</option>)}</select></label></div>
+ <p className={s.hint}>{item.category==="Windows"?"Standard residential sizes with double-pane low-E glass. Bay and bow assemblies need an individual assessment.":item.category==="Entry Door"?"Prehung door assembly, including selected sidelights, replacing an existing opening of the same size. No opening enlargement assumed.":"Standard 6-foot patio door assembly replacing an existing opening. Oversized systems need an individual assessment."}</p>
+ <div className={s.fields}><label htmlFor={`quantity-${item.id}`}>Quantity<input id={`quantity-${item.id}`} type="number" min={1} max={30} step={1} value={item.quantity} onChange={e=>update(item.id,{quantity:Math.max(1,Math.min(30,Math.round(Number(e.target.value)||1)))})}/></label>
+ <label htmlFor={`scope-${item.id}`}>Installation scope<select id={`scope-${item.id}`} value={item.scope} onChange={e=>update(item.id,{scope:e.target.value})}><option value="standard">Same-size replacement</option>{item.category==="Windows"&&<option value="full">Full-frame replacement</option>}<option value="unknown">I’m not sure yet</option><option value="custom">Damage / opening changes</option></select></label></div>
+ </section>)}<button className={s.add} type="button" disabled={items.length>=8} onClick={()=>{const id=nextId.current++;setItems(current=>[...current,newItem(id)]);}}><Plus size={18}/>{items.length>=8?"Maximum 8 project items":"Add another item"}</button></div>
+ <aside className={s.result} aria-label="Your project estimate"><div className={s.resultInner}><span className={s.kicker}>YOUR PLANNING RANGE</span><div aria-live="polite" aria-atomic="true"><h2>{custom?"Let’s review your project":`${money(total[0])}–${money(total[1])}`}</h2><p>{custom?"Some items need an on-site assessment before we can provide a complete range.":"Products + professional installation"}</p></div>
+ <div className={s.breakdown}>{items.map((item,i)=><div key={item.id}><span>{item.quantity} × {item.material} {item.style.toLowerCase()}</span><strong>{results[i]?`${money(results[i]![0])}–${money(results[i]![1])}`:"Assessment needed"}</strong></div>)}</div>
+ {custom&&total[1]>0&&<p>Priced items only: {money(total[0])}–{money(total[1])}. Assessment items are additional.</p>}
+ <ul className={s.inclusions}>{["Product & professional installation","Removal & disposal","Standard sealing & finishing"].map(text=><li key={text}><Check size={17}/>{text}</li>)}</ul><p className={s.exclusions}>Assumes sound openings and straightforward access. Permits, applicable taxes, repairs, specialty finishes and oversized products are additional.</p>
+ <Link className={s.cta} href={{pathname:"/estimate",query:{project:message,types:[...new Set(items.map(i=>i.category))].join(",")}}}>Get my free in-home estimate <ArrowRight size={18}/></Link><span className={s.noEmail}>No contact details needed to use this calculator.</span></div></aside></div>;
+}
