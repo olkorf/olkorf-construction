@@ -1,3 +1,5 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+
 const recipient = "info@olkorfconstruction.com";
 const failure = () => Response.json({ error: "Unable to confirm delivery. Please try again or email us directly." }, { status: 503 });
 
@@ -54,10 +56,28 @@ export async function POST(request: Request) {
     (values.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))) {
     return Response.json({ error: "Required information missing or invalid" }, { status: 400 });
   }
-  const account = process.env.CLOUDFLARE_ACCOUNT_ID;
-  const token = process.env.CLOUDFLARE_EMAIL_API_TOKEN;
-  const from = process.env.INQUIRY_FROM_EMAIL;
-  if (!account || !token || !from) return failure();
+  let bindings: Record<string, unknown> = {};
+  try {
+    bindings = (await getCloudflareContext({ async: true })).env as unknown as Record<string, unknown>;
+  } catch {
+    // Ordinary Node hosting can still supply these through process.env.
+    console.warn("[inquiries] Cloudflare bindings unavailable");
+  }
+  const setting = (name: string) => {
+    const value = bindings[name] ?? process.env[name];
+    return typeof value === "string" ? value.trim() : undefined;
+  };
+  const account = setting("CLOUDFLARE_ACCOUNT_ID");
+  const token = setting("CLOUDFLARE_EMAIL_API_TOKEN");
+  const from = setting("INQUIRY_FROM_EMAIL");
+  if (!account || !token || !from) {
+    console.error("[inquiries] Missing email configuration", {
+      CLOUDFLARE_ACCOUNT_ID: Boolean(account),
+      CLOUDFLARE_EMAIL_API_TOKEN: Boolean(token),
+      INQUIRY_FROM_EMAIL: Boolean(from)
+    });
+    return failure();
+  }
   const title = estimate ? "New Estimate Request" : "New Contact Message";
   const entries = [
     ["Name", values.name], ["Email", values.email], ["Phone", values.phone],
@@ -77,9 +97,20 @@ export async function POST(request: Request) {
     });
     const data = await response.json();
     const accepted = [...(data.result?.delivered ?? []), ...(data.result?.queued ?? [])];
-    if (!response.ok || !data.success || !accepted.includes(recipient)) return failure();
+    if (!response.ok || !data.success || !accepted.includes(recipient)) {
+      // Never log credentials, request contents, or the provider's full response.
+      console.error("[inquiries] Cloudflare did not accept delivery", {
+        status: response.status,
+        success: data.success === true,
+        recipientAccepted: accepted.includes(recipient),
+        errorCodes: Array.isArray(data.errors) ? data.errors.map((error: { code?: unknown }) =>
+          typeof error.code === "number" ? error.code : "unavailable") : []
+      });
+      return failure();
+    }
     return Response.json({ ok: true });
   } catch {
+    console.error("[inquiries] Cloudflare request failed or returned an invalid response");
     return failure();
   }
 }

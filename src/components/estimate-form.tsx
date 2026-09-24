@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { EstimateConfirmation } from "@/components/estimate-confirmation";
 import { FormEvent, useState } from "react";
 
 const projectTypes = [
@@ -103,16 +103,7 @@ export function EstimateForm({ initialMessage = "", initialTypes = [] }: { initi
     }
   };
 
-  if (isSubmitted) {
-    return (
-      <div className="estimate-success" role="status">
-        <h2>Thank you! We received your estimate request and will contact you shortly.</h2>
-        <Link className="cta-button" href="/">
-          Return Home
-        </Link>
-      </div>
-    );
-  }
+  if (isSubmitted) return <EstimateConfirmation />;
 
   return (
     <form className="estimate-form" onSubmit={handleSubmit}>
